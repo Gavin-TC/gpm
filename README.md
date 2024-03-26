@@ -1,4 +1,4 @@
-# GPM (Gavin's Password Manager)
+# GPM
 Quick CLI password manager I made for fun and personal use.
 
 # Use
