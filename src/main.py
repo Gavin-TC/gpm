@@ -2,11 +2,9 @@ import sys
 import os
 import random
 import csv
-# from Crypto.Cipher import AES
-# from Crypto.Util.Padding import pad, unpad
-# from Crypto.Random import get_random_bytes
 
 file_name: str = 'pswd.csv'
+os.chdir(os.path.dirname(os.path.abspath(sys.argv[0])))
 
 def main() -> None:
     if len(sys.argv) < 2:
@@ -42,22 +40,28 @@ def main() -> None:
                 print()
                 
             case "-l":  # list passwords flag
-                with open(file_name, 'r') as file:
-                    reader = csv.reader(file)
-                    rows = list(reader)
+                try:
+                    with open(file_name, 'r') as file:
+                        reader = csv.reader(file)
+                        rows = list(reader)
 
-                    if len(rows) > 0:
-                        for row in rows:
-                            print(row[0] + ": " + row[1])
-                    else:
-                        print("[ERROR] There aren't any passwords stored!")
-                        print()
-                        return
+                        if len(rows) > 0:
+                            for row in rows:
+                                print(row[0] + ": " + row[1])
+                        else:
+                            print("[ERROR] There aren't any passwords stored!")
+                            print()
+                            return
+                except Exception as e:
+                    print("[ERROR] There was an error when reading the file!: \"" + str(e) + "\"")
                 print()
             
             case "-h":  # help flag
-                print("Use \"-c\" flag to create/change a current password.")
-                print("Use [gpm \"password_name\"] to get the password associated with that name.")
+                print("Use the \"-c\" flag to create/change a current password.")
+                print("Use the \"-a\" flag to add an external password.")
+                print("Use the \"-r\" flag to remove an existing password.")
+                print("Use the \"-l\" flag to list all existing passwords.")
+                print("Use \"password_name\" argument to get the password associated with that name. This will also copy the password to your clipboard.")
                 print("Ctrl + C to cancel at any point during password creation.")
                 print()
 
@@ -72,7 +76,6 @@ def create_password(pass_name: str) -> None:
 
     while not satisfied:
         length: int = abs(max(1, min(int(input("LENGTH?: ").lower()), 25)))
-        print(length)
         numbers:  bool = True if input("NUMBERS?: [Y/n]: ").lower() == 'y' else False
         letters:  bool = True if input("LETTERS?: [Y/n]: ").lower() == 'y' else False
         specials: bool = True if input("SPECIAL?: [Y/n]: ").lower() == 'y' else False
@@ -189,7 +192,7 @@ def store_password(name, password) -> None:
                         row[1] = password
                     writer.writerow(row)
         except Exception as e:
-            print("[ERROR] There was a problem reading the file!: \"" + e + "\"")
+            print("[ERROR] There was a problem reading the file!: \"" + str(e) + "\"")
             print()
     else:
         with open(file_name, 'a', newline='') as file:
