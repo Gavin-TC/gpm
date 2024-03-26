@@ -52,6 +52,7 @@ def main() -> None:
                     else:
                         print("[ERROR] There aren't any passwords stored!")
                         print()
+                        return
                 print()
             
             case "-h":  # help flag
