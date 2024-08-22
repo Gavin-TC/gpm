@@ -1,5 +1,5 @@
 # GPM
-Quick CLI password manager I made for fun and personal use.
+Quick CLI password manager I made for fun.
 
 # Use
 - Only requirement is pyinstaller. Install via `pip install pyinstaller`.
